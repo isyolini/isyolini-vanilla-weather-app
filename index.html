@@ -11,6 +11,7 @@
       integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
       crossorigin="anonymous"
     />
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
     <link rel="stylesheet" href="src/style.css" />
     <title>Isyolini Vanilla Weather App</title>
   </head>
@@ -19,10 +20,10 @@
       <div class="weather-app-wrapper">
         <div class="weather-app">
           <div class="overview">
-            <h1>Milan</h1>
+            <h1 id="city">Milan</h1>
             <ul>
               <li>Monday 05:00</li>
-              <li>Clear</li>
+              <li id="description"></li>
             </ul>
           </div>
           <div class="row">
@@ -34,7 +35,7 @@
                   id="icon"
                 />
                 <div>
-                  <strong id="temperature">12</strong>
+                  <strong id="temperature"></strong>
                   <span class="units">ºC | <a href="#">ºF</a> </span>
                 </div>
               </div>
@@ -42,8 +43,8 @@
             <div class="col-md-6">
               <ul>
                 <li>Precipitation: 0%</li>
-                <li>Humidity: 73%</li>
-                <li>Wind 2 km/h</li>
+                <li>Humidity: <span id="humidity"></span>%</li>
+                <li>Wind: <span id="wind"></span>km/h</li>
               </ul>
             </div>
           </div>
