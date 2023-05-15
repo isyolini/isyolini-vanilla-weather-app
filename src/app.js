@@ -36,8 +36,11 @@ function displayTemperature(response) {
   humidityElement.innerHTML = response.data.temperature.humidity;
   windElement.innerHTML = Math.round(response.data.wind.speed);
   dateElement.innerHTML = formatDate(response.data.time * 1000);
+
+  console.log(response.data);
 }
 
 let apiKey = "ate4fc772f93a185a4d70db0f2foe64c";
-let apiUrl = `https://api.shecodes.io/weather/v1/current?query=Milan&key=${apiKey}&units=metric`;
+let city = "Rome";
+let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
 axios.get(apiUrl).then(displayTemperature);
