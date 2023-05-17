@@ -1,6 +1,6 @@
 //calculate DATE
-function formatDate(timestamp) {
-  let date = new Date(timestamp);
+function displayDate(date) {
+  let now = new Date();
   let days = [
     "Sunday",
     "Monday",
@@ -10,16 +10,27 @@ function formatDate(timestamp) {
     "Friday",
     "Saturday",
   ];
-  let day = days[date.getDay()];
-  let hours = date.getHours();
-  if (hours < 10) {
-    hours = `0${hours}`;
-  }
-  let minutes = date.getMinutes();
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
-  return `${day} ${hours}:${minutes}`;
+  let day = days[now.getDay()];
+  let months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  let month = months[now.getMonth()];
+  let monthDate = now.getDate();
+  let hours = ("0" + now.getHours()).slice(-2);
+  let minutes = ("0" + now.getMinutes()).slice(-2);
+  let formattedDate = `${day} ${month} ${monthDate}, ${hours}:${minutes}`;
+  return formattedDate;
 }
 
 //calculate TEMPERATURE
@@ -39,7 +50,7 @@ function displayTemperature(response) {
   descriptionElement.innerHTML = response.data.condition.description;
   humidityElement.innerHTML = response.data.temperature.humidity;
   windElement.innerHTML = Math.round(response.data.wind.speed);
-  dateElement.innerHTML = formatDate(response.data.time * 1000);
+  dateElement.innerHTML = displayDate(response.data.time * 1000);
   iconElement.setAttribute(
     "src",
     `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${response.data.condition.icon}.png`
@@ -48,16 +59,17 @@ function displayTemperature(response) {
 }
 
 //SEARCH ENGINE
-function search(city) {
-  let apiKey = "ate4fc772f93a185a4d70db0f2foe64c";
-  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
-  axios.get(apiUrl).then(displayTemperature);
-}
 
 function handleSubmit(event) {
   event.preventDefault();
   let cityInputElement = document.querySelector("#city-input");
   search(cityInputElement.value);
+}
+
+function search(city) {
+  let apiKey = "ate4fc772f93a185a4d70db0f2foe64c";
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayTemperature);
 }
 
 ////CURRENT LOCATION
@@ -91,10 +103,13 @@ function celsiusTemperatureConvertion(event) {
   temperatureElement.innerHTML = Math.round(celsiusTemperature);
 }
 
-let celsiusTemperature = null;
+let currentDate = document.querySelector("#date");
+currentDate.innerHTML = displayDate(new Date());
 
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
+
+let celsiusTemperature = null;
 
 let fahrenheitLink = document.querySelector("#fahrenheit-link");
 fahrenheitLink.addEventListener("click", fahrenheitTemperatureConvertion);
