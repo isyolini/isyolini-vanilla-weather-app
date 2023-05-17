@@ -42,11 +42,11 @@ a {
 }
 
 .weather-app {
-  padding: 20px;
   background: linear-gradient(to top, #dad4ec 0%, #dad4ec 1%, #f3e7e9 100%);
   border-radius: 10px;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.5);
-  margin: 30px auto;
+  margin: 20px auto;
+  padding: 20px;
   max-width: 800px;
 }
 
@@ -83,4 +83,8 @@ a {
 
 .weather-temperature .active:hover {
   text-decoration: none;
+}
+
+.footer {
+  text-align: center;
 }
