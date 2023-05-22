@@ -1,6 +1,6 @@
 //calculate DATE
-function displayDate(date) {
-  let now = new Date();
+function displayDate(timestamp) {
+  let now = new Date(timestamp);
   let days = [
     "Sunday",
     "Monday",
@@ -34,7 +34,7 @@ function displayDate(date) {
 }
 
 //calculate TEMPERATURE
-function displayTemperature(response) {
+function displayCurrentTemperature(response) {
   let temperatureElement = document.querySelector("#temperature");
   let cityElement = document.querySelector("#city");
   let descriptionElement = document.querySelector("#description");
@@ -44,7 +44,6 @@ function displayTemperature(response) {
   let iconElement = document.querySelector("#icon");
 
   celsiusTemperature = response.data.temperature.current;
-
   temperatureElement.innerHTML = Math.round(celsiusTemperature);
   cityElement.innerHTML = response.data.city;
   descriptionElement.innerHTML = response.data.condition.description;
@@ -59,22 +58,21 @@ function displayTemperature(response) {
 }
 
 //SEARCH ENGINE
+function searchCity(city) {
+  let apiKey = "ate4fc772f93a185a4d70db0f2foe64c";
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayCurrentTemperature);
+}
 
 function handleSubmit(event) {
   event.preventDefault();
   let cityInputElement = document.querySelector("#city-input");
-  search(cityInputElement.value);
-}
-
-function search(city) {
-  let apiKey = "ate4fc772f93a185a4d70db0f2foe64c";
-  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
-  axios.get(apiUrl).then(displayTemperature);
+  searchCity(cityInputElement.value);
 }
 
 ////CURRENT LOCATION
-function searchLocation(position) {
-  let apiKey = "ce144f0cf51fa43f03431f0488a36728";
+/*function searchLocation(position) {
+  let apiKey = "ate4fc772f93a185a4d70db0f2foe64c";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(displayWeatherCondition);
 }
@@ -82,7 +80,7 @@ function searchLocation(position) {
 function getCurrentLocation(event) {
   event.preventDefault();
   navigator.geolocation.getCurrentPosition(searchLocation);
-}
+}*/
 
 //UNITS CONVERTION
 function fahrenheitTemperatureConvertion(event) {
@@ -106,15 +104,14 @@ function celsiusTemperatureConvertion(event) {
 let currentDate = document.querySelector("#date");
 currentDate.innerHTML = displayDate(new Date());
 
-let form = document.querySelector("#search-form");
-form.addEventListener("submit", handleSubmit);
-
-let celsiusTemperature = null;
-
 let fahrenheitLink = document.querySelector("#fahrenheit-link");
 fahrenheitLink.addEventListener("click", fahrenheitTemperatureConvertion);
 
 let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", celsiusTemperatureConvertion);
+let celsiusTemperature = null;
 
-search("Rome");
+let form = document.querySelector("#search-form");
+form.addEventListener("submit", handleSubmit);
+
+searchCity("Rome");
