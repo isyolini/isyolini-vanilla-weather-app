@@ -61,26 +61,26 @@ function displayCurrentTemperature(response) {
 function searchCity(city) {
   let apiKey = "ate4fc772f93a185a4d70db0f2foe64c";
   let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
+  //`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(displayCurrentTemperature);
 }
 
 function handleSubmit(event) {
   event.preventDefault();
-  let cityInputElement = document.querySelector("#city-input");
-  searchCity(cityInputElement.value);
+  let city = document.querySelector("#city-input").value;
+  searchCity(city);
 }
 
-////CURRENT LOCATION
-/*function searchLocation(position) {
+function searchLocation(position) {
   let apiKey = "ate4fc772f93a185a4d70db0f2foe64c";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
-  axios.get(apiUrl).then(displayWeatherCondition);
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?lon=${position.data.coordinates.longitude}&lat=${position.data.coordinates.latitude}&key=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayCurrentTemperature);
 }
 
 function getCurrentLocation(event) {
   event.preventDefault();
   navigator.geolocation.getCurrentPosition(searchLocation);
-}*/
+}
 
 //UNITS CONVERTION
 function fahrenheitTemperatureConvertion(event) {
@@ -111,7 +111,10 @@ let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", celsiusTemperatureConvertion);
 let celsiusTemperature = null;
 
-let form = document.querySelector("#search-form");
-form.addEventListener("submit", handleSubmit);
+let searchForm = document.querySelector("#search-form");
+searchForm.addEventListener("submit", handleSubmit);
+
+let currentLocationButton = document.querySelector("#current-location-button");
+currentLocationButton.addEventListener("click", getCurrentLocation);
 
 searchCity("Rome");
