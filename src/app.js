@@ -33,6 +33,45 @@ function displayDate(timestamp) {
   return formattedDate;
 }
 
+// 5 DAYS FORECAST
+function displayForecast(response) {
+  console.log(response.data.daily);
+  let forecastElement = document.querySelector("#forecast");
+
+  let forecastHTML = `<div class="row">`;
+  let days = ["MON", "TUE", "WED", "THU", "FRI"];
+  days.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      `
+  <div class="col-2">
+    <div class="weather-forecast-date">${day}
+      <br />
+      <img
+        src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/clear-sky-day.png"
+        alt=""
+        width="42"
+      />
+      <div class="weather-forecast-temperature">
+        <span class="weather-forecast-temperature-max"> 18º </span>-
+        <span class="weather-forecast-temperature-min"> 12º </span>
+      </div>
+    </div>
+  </div>`;
+  });
+
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
+}
+
+//API FORECAST CALL
+function getForecast(coordinates) {
+  let apiKey = "ate4fc772f93a185a4d70db0f2foe64c";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${coordinates.longitude}&lat=${coordinates.latitude}&key=${apiKey}&units=metric`;
+  console.log(apiUrl);
+  axios.get(apiUrl).then(displayForecast);
+}
+
 //calculate TEMPERATURE
 function displayCurrentTemperature(response) {
   let temperatureElement = document.querySelector("#temperature");
@@ -42,6 +81,7 @@ function displayCurrentTemperature(response) {
   let windElement = document.querySelector("#wind");
   let dateElement = document.querySelector("#date");
   let iconElement = document.querySelector("#icon");
+  console.log(response.data);
 
   celsiusTemperature = response.data.temperature.current;
   temperatureElement.innerHTML = Math.round(celsiusTemperature);
@@ -55,6 +95,8 @@ function displayCurrentTemperature(response) {
     `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${response.data.condition.icon}.png`
   );
   iconElement.setAttribute("alt", response.data.condition.description);
+
+  getForecast(response.data.coordinates);
 }
 
 //SEARCH ENGINE
@@ -71,7 +113,7 @@ function handleSubmit(event) {
 }
 
 function searchLocation(position) {
-  let apiKey = "ate4fc772f93a185a4d70db0f2foe64c";
+  let apiKey = "3bc520cc14bbdedfd7e45158f2ef0439";
   let apiUrl = `https://api.shecodes.io/weather/v1/current?lon=${position.data.coordinates.longitude}&lat=${position.data.coordinates.latitude}&key=${apiKey}&units=metric`;
   axios.get(apiUrl).then(displayCurrentTemperature);
 }
@@ -103,17 +145,18 @@ function celsiusTemperatureConvertion(event) {
 let currentDate = document.querySelector("#date");
 currentDate.innerHTML = displayDate(new Date());
 
-let fahrenheitLink = document.querySelector("#fahrenheit-link");
-fahrenheitLink.addEventListener("click", fahrenheitTemperatureConvertion);
-
-let celsiusLink = document.querySelector("#celsius-link");
-celsiusLink.addEventListener("click", celsiusTemperatureConvertion);
 let celsiusTemperature = null;
 
 let searchForm = document.querySelector("#search-form");
 searchForm.addEventListener("submit", handleSubmit);
 
-//let currentLocationButton = document.querySelector("#current-location-button");
-//currentLocationButton.addEventListener("click", getCurrentLocation);
+let fahrenheitLink = document.querySelector("#fahrenheit-link");
+fahrenheitLink.addEventListener("click", fahrenheitTemperatureConvertion);
+
+let celsiusLink = document.querySelector("#celsius-link");
+celsiusLink.addEventListener("click", celsiusTemperatureConvertion);
+
+/*let currentLocationButton = document.querySelector("#current-location-button");
+currentLocationButton.addEventListener("click", getCurrentLocation);*/
 
 searchCity("Rome");
