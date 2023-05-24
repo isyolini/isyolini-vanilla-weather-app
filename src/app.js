@@ -33,31 +33,47 @@ function displayDate(timestamp) {
   return formattedDate;
 }
 
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  return days[day];
+}
+
 // 5 DAYS FORECAST
 function displayForecast(response) {
-  console.log(response.data.daily);
+  let forecast = response.data.daily;
+
   let forecastElement = document.querySelector("#forecast");
 
   let forecastHTML = `<div class="row">`;
-  let days = ["MON", "TUE", "WED", "THU", "FRI"];
-  days.forEach(function (day) {
-    forecastHTML =
-      forecastHTML +
-      `
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `
   <div class="col-2">
-    <div class="weather-forecast-date">${day}
+    <div class="weather-forecast-date">${formatDay(forecastDay.time)}
+    
       <br />
       <img
-        src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/clear-sky-day.png"
+        src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${
+          forecastDay.condition.icon
+        }.png"
         alt=""
         width="42"
       />
       <div class="weather-forecast-temperature">
-        <span class="weather-forecast-temperature-max"> 18º </span>-
-        <span class="weather-forecast-temperature-min"> 12º </span>
+        <span class="weather-forecast-temperature-max"> ${Math.round(
+          forecastDay.temperature.maximum
+        )}º </span>-
+        <span class="weather-forecast-temperature-min"> ${Math.round(
+          forecastDay.temperature.minimum
+        )}º </span>
       </div>
     </div>
   </div>`;
+    }
   });
 
   forecastHTML = forecastHTML + `</div>`;
@@ -109,7 +125,7 @@ function searchCity(city) {
 function handleSubmit(event) {
   event.preventDefault();
   let cityInputElement = document.querySelector("#city-input");
-  search(cityInputElement.value);
+  searchCity(cityInputElement.value);
 }
 
 function searchLocation(position) {
