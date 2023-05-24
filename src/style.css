@@ -68,9 +68,9 @@ a {
 }
 
 .weather-temperature .units {
-  position: fixed;
+  position: absolute;
   font-size: 14px;
-  vertical-align: top;
+  vertical-align: text-top;
 
   /*padding-left: 6px;*/
 }
