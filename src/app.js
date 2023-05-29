@@ -126,13 +126,14 @@ function handleSubmit(event) {
   searchCity(cityInputElement.value);
 }
 
-function searchLocation(position) {
-  let apiKey = "3bc520cc14bbdedfd7e45158f2ef0439";
-  let apiUrl = `https://api.shecodes.io/weather/v1/current?lon=${position.data.coordinates.longitude}&lat=${position.data.coordinates.latitude}&key=${apiKey}&units=metric`;
+function searchLocation(coordinates) {
+  let apiKey = "ate4fc772f93a185a4d70db0f2foe64c";
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}&key=${apiKey}&units=metric`;
   axios.get(apiUrl).then(displayCurrentTemperature);
 }
 
-function getCurrentLocation() {
+function getCurrentLocation(event) {
+  event.preventDefault();
   navigator.geolocation.getCurrentPosition(searchLocation);
 }
 
@@ -144,8 +145,7 @@ let celsiusTemperature = null;
 let searchForm = document.querySelector("#search-form");
 searchForm.addEventListener("submit", handleSubmit);
 
-/*let currentLocationButton = document.querySelector("#current-location-button");
+let currentLocationButton = document.querySelector("#current-location-button");
 currentLocationButton.addEventListener("click", getCurrentLocation);
-getCurrentLocation();*/
 
 searchCity("Rome");
