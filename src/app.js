@@ -84,7 +84,6 @@ function displayForecast(response) {
 function getForecast(coordinates) {
   let apiKey = "ate4fc772f93a185a4d70db0f2foe64c";
   let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${coordinates.longitude}&lat=${coordinates.latitude}&key=${apiKey}&units=metric`;
-  console.log(apiUrl);
   axios.get(apiUrl).then(displayForecast);
 }
 
@@ -97,7 +96,6 @@ function displayCurrentTemperature(response) {
   let windElement = document.querySelector("#wind");
   let dateElement = document.querySelector("#date");
   let iconElement = document.querySelector("#icon");
-  console.log(response.data);
 
   celsiusTemperature = response.data.temperature.current;
   temperatureElement.innerHTML = Math.round(celsiusTemperature);
@@ -134,8 +132,7 @@ function searchLocation(position) {
   axios.get(apiUrl).then(displayCurrentTemperature);
 }
 
-function getCurrentLocation(event) {
-  event.preventDefault();
+function getCurrentLocation() {
   navigator.geolocation.getCurrentPosition(searchLocation);
 }
 
@@ -148,6 +145,7 @@ let searchForm = document.querySelector("#search-form");
 searchForm.addEventListener("submit", handleSubmit);
 
 /*let currentLocationButton = document.querySelector("#current-location-button");
-currentLocationButton.addEventListener("click", getCurrentLocation);*/
+currentLocationButton.addEventListener("click", getCurrentLocation);
+getCurrentLocation();*/
 
 searchCity("Rome");
